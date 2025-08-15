@@ -50,6 +50,10 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    if (!prompt) {
+      return new Response(JSON.stringify({ error: 'No prompt available' }), { status: 400, headers: corsHeaders() })
+    }
+
     // Build the system prompt from fields
     const systemContent = [
       `Role: ${prompt.role}`,
