@@ -23,6 +23,7 @@ class PromptCreate(PromptBase):
 
 
 class PromptUpdate(BaseModel):
+	title: Optional[str] = Field(default=None, min_length=1, max_length=200)
 	role: Optional[str] = Field(default=None, min_length=1, max_length=200)
 	task: Optional[str] = Field(default=None, min_length=1)
 	context: Optional[str] = Field(default=None, min_length=1)
