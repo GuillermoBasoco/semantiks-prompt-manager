@@ -29,6 +29,12 @@ export default function PromptDetail(props: Props) {
     mutate()
   }
 
+  async function remove() {
+    if (!data) return
+    await fetch(`${apiBaseUrl}/prompts/${data.id}`, { method: 'DELETE' })
+    window.location.href = '/'
+  }
+
   if (isLoading) return <div className="card p-4">Loading…</div>
   if (error || !data) return <div className="card p-4 text-red-600">Not found</div>
 
@@ -45,6 +51,7 @@ export default function PromptDetail(props: Props) {
           <div className="space-x-2">
             <a className="btn-outline px-3 py-2" href="/">Back</a>
             <button className="btn-primary px-3 py-2" onClick={toggle}>{data.is_active ? 'Deactivate' : 'Activate'}</button>
+            <button className="btn-outline px-3 py-2 text-red-600 border-red-300" onClick={remove}>Delete</button>
           </div>
         </div>
         <div className="mt-4 text-sm text-gray-600">

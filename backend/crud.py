@@ -81,3 +81,8 @@ def update_prompt(
 	return prompt
 
 
+def delete_prompt(session: Session, *, prompt: Prompt) -> None:
+	session.delete(prompt)
+	session.commit()
+
+

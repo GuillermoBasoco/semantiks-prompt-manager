@@ -19,9 +19,4 @@ primary_region = "iad"
 [[vm]]
   size = "shared-cpu-1x"
 
-# Postgres
-[[mounts]]
-  source = "data"
-  destination = "/data"
-
 

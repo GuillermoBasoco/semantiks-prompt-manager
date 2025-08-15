@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from sqlmodel import Session
 
-from crud import create_prompt, get_prompt_by_id, list_prompts, update_prompt
+from crud import create_prompt, get_prompt_by_id, list_prompts, update_prompt, delete_prompt
 from db import get_session, init_db
 from schemas import PromptCreate, PromptRead, PromptUpdate
 
@@ -81,5 +81,14 @@ def update_prompt_endpoint(
 		is_active=payload.is_active,
 	)
 	return updated
+
+
+@app.delete("/prompts/{prompt_id}", status_code=204)
+def delete_prompt_endpoint(prompt_id: int, session: Session = Depends(get_session)) -> None:
+	prompt = get_prompt_by_id(session, prompt_id)
+	if not prompt:
+		raise HTTPException(status_code=404, detail="Prompt not found")
+	delete_prompt(session, prompt=prompt)
+	return None
 
 

@@ -28,6 +28,11 @@ export function PromptsList() {
     mutate()
   }
 
+  async function remove(id: number) {
+    await fetch(`${apiBaseUrl}/prompts/${id}`, { method: 'DELETE' })
+    mutate()
+  }
+
   if (isLoading) return <div className="card p-4">Loading…</div>
   if (error) return <div className="card p-4 text-red-600">Failed to load</div>
   const prompts = data || []
@@ -61,6 +66,7 @@ export function PromptsList() {
                 <td className="p-3 text-right space-x-2">
                   <a className="btn-outline px-3 py-1" href={`/prompts/${p.id}`}>View</a>
                   <button className="btn-primary px-3 py-1" onClick={function () { toggle(p.id, p.is_active) }}>{p.is_active ? 'Deactivate' : 'Activate'}</button>
+                  <button className="btn-outline px-3 py-1 text-red-600 border-red-300" onClick={function () { remove(p.id) }}>Delete</button>
                 </td>
               </tr>
             )
