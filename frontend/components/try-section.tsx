@@ -46,10 +46,14 @@ export default function TrySection() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: sample.title,
-          content: sample.content,
-          tags: sample.tags,
-          is_active: true
+          role: sample.title,
+          task: '(especifica la acción)',
+          context: sample.content,
+          constraints: [],
+          output_format: '(define el formato de salida)',
+          criteria: '(define los criterios)',
+          status: 'active',
+          tags: sample.tags
         })
       })
       window.location.href = '/'

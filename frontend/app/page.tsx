@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { PromptsList } from '@/components/prompts-list'
 import { Filters } from '@/components/prompts-filters'
 import TrySection from '@/components/try-section'
+import CreatePromptCollapsible from '@/components/create-prompt-collapsible'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
@@ -10,6 +11,7 @@ export default function HomePage() {
   return (
     <main className="space-y-4">
       <TrySection />
+      <CreatePromptCollapsible />
       <div className="card p-4">
         <Suspense fallback={<div>Loading filters…</div>}>
           <Filters />
