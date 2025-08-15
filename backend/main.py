@@ -33,10 +33,14 @@ def on_startup() -> None:
 def create_prompt_endpoint(payload: PromptCreate, session: Session = Depends(get_session)) -> PromptRead:
 	prompt = create_prompt(
 		session,
-		title=payload.title,
-		content=payload.content,
+		role=payload.role,
+		task=payload.task,
+		context=payload.context,
+		constraints=payload.constraints,
+		output_format=payload.output_format,
+		criteria=payload.criteria,
+		status=payload.status,
 		tags=payload.tags,
-		is_active=payload.is_active,
 	)
 	return prompt
 
@@ -75,10 +79,14 @@ def update_prompt_endpoint(
 	updated = update_prompt(
 		session,
 		prompt=prompt,
-		title=payload.title,
-		content=payload.content,
+		role=payload.role,
+		task=payload.task,
+		context=payload.context,
+		constraints=payload.constraints,
+		output_format=payload.output_format,
+		criteria=payload.criteria,
+		status=payload.status,
 		tags=payload.tags,
-		is_active=payload.is_active,
 	)
 	return updated
 
