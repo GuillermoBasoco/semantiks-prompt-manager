@@ -3,6 +3,8 @@
 import useSWR from 'swr'
 import { useSearchParams } from 'next/navigation'
 import { fetcher, apiBaseUrl } from '@/lib/api'
+import Modal from '@/components/ui/modal'
+import { useState } from 'react'
 
 type Prompt = {
   id: number
@@ -18,6 +20,8 @@ export function PromptsList() {
   const searchParams = useSearchParams()
   const qs = searchParams.toString()
   const { data, error, isLoading, mutate } = useSWR<Prompt[]>(`${apiBaseUrl}/prompts${qs ? `?${qs}` : ''}`, fetcher)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null)
 
   async function toggle(id: number, isActive: boolean) {
     await fetch(`${apiBaseUrl}/prompts/${id}`, {
@@ -31,6 +35,23 @@ export function PromptsList() {
   async function remove(id: number) {
     await fetch(`${apiBaseUrl}/prompts/${id}`, { method: 'DELETE' })
     mutate()
+  }
+
+  function askDelete(id: number) {
+    setPendingDeleteId(id)
+    setConfirmOpen(true)
+  }
+
+  function closeConfirm() {
+    setConfirmOpen(false)
+    setPendingDeleteId(null)
+  }
+
+  async function confirmDelete() {
+    if (pendingDeleteId != null) {
+      await remove(pendingDeleteId)
+    }
+    closeConfirm()
   }
 
   if (isLoading) return <div className="card p-4">Loading…</div>
@@ -66,7 +87,7 @@ export function PromptsList() {
                 <td className="p-3 text-right space-x-2">
                   <a className="btn-outline px-3 py-1" href={`/prompts/${p.id}`}>View</a>
                   <button className="btn-primary px-3 py-1" onClick={function () { toggle(p.id, p.is_active) }}>{p.is_active ? 'Deactivate' : 'Activate'}</button>
-                  <button className="btn-outline px-3 py-1 text-red-600 border-red-300" onClick={function () { remove(p.id) }}>Delete</button>
+                  <button className="btn-outline px-3 py-1 text-red-600 border-red-300" onClick={function () { askDelete(p.id) }}>Delete</button>
                 </td>
               </tr>
             )
@@ -78,6 +99,15 @@ export function PromptsList() {
           ) : null}
         </tbody>
       </table>
+      <Modal
+        open={confirmOpen}
+        title="Confirmar eliminación"
+        description="Esta acción eliminará el prompt de forma permanente."
+        confirmLabel="Eliminar"
+        cancelLabel="Cancelar"
+        onConfirm={confirmDelete}
+        onClose={closeConfirm}
+      />
     </div>
   )
 }
