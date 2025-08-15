@@ -6,33 +6,53 @@ import { apiBaseUrl } from '@/lib/api'
 
 type Sample = {
   title: string
-  description: string
-  image: string
+  role: string
+  task: string
+  context: string
+  constraints: string[]
+  output_format: string
+  criteria: string
+  status: 'active' | 'inactive'
   tags: string[]
-  content: string
+  image: string
 }
 
 const samples: Sample[] = [
   {
     title: 'Poetas del Siglo de Oro Español',
-    description: 'Crea prompts inspirados en Lope, Quevedo y Góngora.',
-    image: '/images/siglo-de-oro-espanol.jpg',
+    role: 'Eres experto en poesía del Siglo de Oro español',
+    task: 'Redacta un soneto original con métrica aproximada',
+    context: 'Inspirado en Lope, Quevedo y Góngora; tema: la fugacidad del tiempo',
+    constraints: ['Idioma: español', 'Extensión: 14 versos', 'Tono: contemplativo'],
+    output_format: 'Texto plano con rimas aproximadas; añadir título del poema en la primera línea',
+    criteria: 'Revisar métrica aproximada, uso de metáforas barrocas y coherencia temática',
+    status: 'active',
     tags: ['poesía', 'siglo-de-oro'],
-    content: 'Escribe un soneto al estilo del Siglo de Oro español sobre la fugacidad del tiempo.'
+    image: '/images/siglo-de-oro-espanol.jpg'
   },
   {
     title: 'Armas de John Wick',
-    description: 'Listado y descripciones de armas icónicas de la saga.',
-    image: '/images/john-wick-guns.avif',
+    role: 'Eres armero y táctico especializado en John Wick',
+    task: 'Elabora una lista con 5 armas icónicas y su uso táctico',
+    context: 'Basado en escenas de la saga John Wick; prioriza precisión y maniobrabilidad',
+    constraints: ['Idioma: español', 'Formato resumido', 'Máx. 120 palabras por arma'],
+    output_format: 'JSON con campos: arma, calibre, ventajas, desventajas, escena_referencia',
+    criteria: 'Verificar coherencia técnica y ejemplos concretos en pantalla',
+    status: 'active',
     tags: ['cine', 'armas'],
-    content: 'Crea una guía con 5 armas icónicas usadas por John Wick, con ventajas y desventajas.'
+    image: '/images/john-wick-guns.avif'
   },
   {
     title: 'Jefes más difíciles de Elden Ring',
-    description: 'Resumen táctico para los encuentros más duros.',
-    image: '/images/malenia-elden-ring.jpg',
+    role: 'Eres estratega experto en Elden Ring',
+    task: 'Proporciona estrategias para superar 3 jefes notoriamente difíciles',
+    context: 'Considera opciones de builds (fuerza, destreza, fe) y uso de invocaciones',
+    constraints: ['Idioma: español', '3-5 pasos por jefe', 'Incluye recomendaciones de equipo'],
+    output_format: 'Markdown con secciones por jefe y lista de pasos',
+    criteria: 'Estrategias reproducibles, claridad y referencias a ataques clave',
+    status: 'active',
     tags: ['gaming', 'elden-ring'],
-    content: 'Escribe estrategias detalladas para vencer a 3 jefes notoriamente difíciles en Elden Ring.'
+    image: '/images/malenia-elden-ring.jpg'
   }
 ]
 
@@ -46,13 +66,14 @@ export default function TrySection() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          role: sample.title,
-          task: '(especifica la acción)',
-          context: sample.content,
-          constraints: [],
-          output_format: '(define el formato de salida)',
-          criteria: '(define los criterios)',
-          status: 'active',
+          title: sample.title,
+          role: sample.role,
+          task: sample.task,
+          context: sample.context,
+          constraints: sample.constraints,
+          output_format: sample.output_format,
+          criteria: sample.criteria,
+          status: sample.status,
           tags: sample.tags
         })
       })
@@ -81,7 +102,7 @@ export default function TrySection() {
               </div>
               <div className="p-4 space-y-2">
                 <h3 className="font-medium">{s.title}</h3>
-                <p className="text-sm text-gray-600">{s.description}</p>
+                <p className="text-sm text-gray-600">{s.task}</p>
                 <div className="space-x-1">
                   {s.tags.map(function (t, j) { return <span key={j} className="badge">{t}</span> })}
                 </div>

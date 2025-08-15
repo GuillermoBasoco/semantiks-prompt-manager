@@ -11,6 +11,7 @@ from models import Prompt
 def create_prompt(
 	session: Session,
 	*,
+	title: str,
 	role: str,
 	task: str,
 	context: str,
@@ -21,6 +22,7 @@ def create_prompt(
 	tags: Optional[List[str]],
 ) -> Prompt:
 	prompt = Prompt(
+		title=title,
 		role=role,
 		task=task,
 		context=context,
@@ -54,7 +56,7 @@ def list_prompts(
 	if q:
 		like = f"%{q}%"
 		query = query.where(
-			(Prompt.role.ilike(like)) | (Prompt.task.ilike(like)) | (Prompt.context.ilike(like)) | (Prompt.criteria.ilike(like)) | (Prompt.output_format.ilike(like))
+			(Prompt.title.ilike(like)) | (Prompt.role.ilike(like)) | (Prompt.task.ilike(like)) | (Prompt.context.ilike(like)) | (Prompt.criteria.ilike(like)) | (Prompt.output_format.ilike(like))
 		)
 
 	if status in {"active", "inactive"}:
@@ -76,6 +78,7 @@ def update_prompt(
 	session: Session,
 	*,
 	prompt: Prompt,
+	title: Optional[str] = None,
 	role: Optional[str] = None,
 	task: Optional[str] = None,
 	context: Optional[str] = None,
@@ -86,6 +89,9 @@ def update_prompt(
 	tags: Optional[List[str]] = None,
 ) -> Prompt:
 	updated = False
+	if title is not None:
+		prompt.title = title
+		updated = True
 	if role is not None:
 		prompt.role = role
 		updated = True

@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 
 
 class PromptBase(BaseModel):
+	title: str = Field(min_length=1, max_length=200)
 	role: str = Field(min_length=1, max_length=200)
 	task: str = Field(min_length=1)
 	context: str = Field(min_length=1)

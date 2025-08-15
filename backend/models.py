@@ -9,6 +9,7 @@ from sqlmodel import Field, SQLModel
 
 class Prompt(SQLModel, table=True):
 	id: Optional[int] = Field(default=None, primary_key=True)
+	title: str
 	role: str  # "Eres [experto X]"
 	task: str  # "[acción concreta]"
 	context: str  # "[datos]"

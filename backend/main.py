@@ -33,6 +33,7 @@ def on_startup() -> None:
 def create_prompt_endpoint(payload: PromptCreate, session: Session = Depends(get_session)) -> PromptRead:
 	prompt = create_prompt(
 		session,
+		title=payload.title,
 		role=payload.role,
 		task=payload.task,
 		context=payload.context,
@@ -79,6 +80,7 @@ def update_prompt_endpoint(
 	updated = update_prompt(
 		session,
 		prompt=prompt,
+		title=payload.title,
 		role=payload.role,
 		task=payload.task,
 		context=payload.context,
