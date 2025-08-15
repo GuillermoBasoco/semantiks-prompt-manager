@@ -8,6 +8,7 @@ import { useState } from 'react'
 type Props = { id: number }
 
 type Prompt = {
+  title: string
   id: number
   role: string
   task: string
