@@ -15,6 +15,7 @@ const SUGGESTIONS = [
 
 export default function CreatePromptCollapsible() {
 	const [title, setTitle] = useState('')
+	const [role, setRole] = useState('')
 	const [content, setContent] = useState('')
 	const [task, setTask] = useState('')
 	const [constraints, setConstraints] = useState('')
@@ -94,6 +95,10 @@ export default function CreatePromptCollapsible() {
 		setTags(e.target.value)
 	}
 
+	function onRoleChange(e: React.ChangeEvent<HTMLInputElement>) {
+		setRole(e.target.value)
+	}
+
 	function onTaskChange(e: React.ChangeEvent<HTMLInputElement>) {
 		setTask(e.target.value)
 	}
@@ -127,7 +132,8 @@ export default function CreatePromptCollapsible() {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					role: title,
+					title: title,
+					role: role || '(define el rol: Eres [experto X])',
 					task: task || '(especifica la acción)',
 					context: content,
 					constraints: constraints.split('\n').map(function (t) { return t.trim() }).filter(function (t) { return t.length > 0 }),
@@ -139,6 +145,7 @@ export default function CreatePromptCollapsible() {
 			})
 			if (!res.ok) throw new Error('No se pudo crear el prompt')
 			setTitle('')
+			setRole('')
 			setContent('')
 			setTask('')
 			setConstraints('')
@@ -165,38 +172,44 @@ export default function CreatePromptCollapsible() {
 					<label className="label">Título</label>
 					<Input placeholder={userTyping || title.length > 0 ? 'Título del prompt' : displayed} value={title} onChange={onTitleChange} onFocus={onTitleFocus} required />
 				</div>
-				<div className={(expanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0') + ' overflow-hidden transition-all duration-500'}>
-					<div className="mt-4">
-						<label className="label">Tarea</label>
-						<Input value={task} onChange={onTaskChange} placeholder="Describe la acción concreta" />
-					</div>
-					<div className="mt-2">
-						<label className="label">Contexto</label>
-						<Textarea value={content} onChange={onContentChange} onFocus={onContentFocus} required />
-					</div>
-					<div className="mt-2">
-						<label className="label">Restricciones (una por línea)</label>
-						<Textarea value={constraints} onChange={onConstraintsChange} placeholder={'- Máximo 200 palabras\n- Evitar jerga técnica'} />
-					</div>
-					<div className="mt-2">
-						<label className="label">Formato de salida</label>
-						<Textarea value={outputFormat} onChange={onOutputFormatChange} placeholder={'JSON con campos: titulo, resumen, palabras_clave'} />
-					</div>
-					<div className="mt-2">
-						<label className="label">Criterios</label>
-						<Textarea value={criteria} onChange={onCriteriaChange} placeholder={'Verificar fuentes, claridad y neutralidad'} />
-					</div>
-					<div className="mt-2">
-						<label className="label">Tags (separadas por coma)</label>
-						<Input value={tags} onChange={onTagsChange} placeholder="poesía, cine, gaming" />
-					</div>
-					<div className="mt-2 flex items-center gap-2">
-						<input id="active-new" type="checkbox" checked={isActive} onChange={onActiveChange} />
-						<label htmlFor="active-new">Activo</label>
-					</div>
-					{error ? <div className="mt-2 text-sm text-red-600">{error}</div> : null}
-					<div className="mt-3 flex gap-2">
-						<Button type="submit" disabled={submitting}>{submitting ? 'Creando…' : 'Crear'}</Button>
+				<div className={(expanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0') + ' overflow-hidden transition-all duration-500'}>
+					<div className="mt-4 grid gap-4 md:grid-cols-2">
+						<div>
+							<label className="label">Rol</label>
+							<Input value={role} onChange={onRoleChange} placeholder="Eres [experto X]" />
+						</div>
+						<div>
+							<label className="label">Tarea</label>
+							<Input value={task} onChange={onTaskChange} placeholder="Describe la acción concreta" />
+						</div>
+						<div className="md:col-span-2">
+							<label className="label">Contexto</label>
+							<Textarea value={content} onChange={onContentChange} onFocus={onContentFocus} required />
+						</div>
+						<div>
+							<label className="label">Restricciones (una por línea)</label>
+							<Textarea value={constraints} onChange={onConstraintsChange} placeholder={'- Máximo 200 palabras\n- Evitar jerga técnica'} />
+						</div>
+						<div>
+							<label className="label">Formato de salida</label>
+							<Textarea value={outputFormat} onChange={onOutputFormatChange} placeholder={'JSON con campos: titulo, resumen, palabras_clave'} />
+						</div>
+						<div className="md:col-span-2">
+							<label className="label">Criterios</label>
+							<Textarea value={criteria} onChange={onCriteriaChange} placeholder={'Verificar fuentes, claridad y neutralidad'} />
+						</div>
+						<div>
+							<label className="label">Tags (separadas por coma)</label>
+							<Input value={tags} onChange={onTagsChange} placeholder="poesía, cine, gaming" />
+						</div>
+						<div className="flex items-center gap-2">
+							<input id="active-new" type="checkbox" checked={isActive} onChange={onActiveChange} />
+							<label htmlFor="active-new">Activo</label>
+						</div>
+						{error ? <div className="md:col-span-2 text-sm text-red-600">{error}</div> : null}
+						<div className="md:col-span-2 mt-1 flex justify-end gap-2">
+							<Button type="submit" disabled={submitting}>{submitting ? 'Creando…' : 'Crear'}</Button>
+						</div>
 					</div>
 				</div>
 			</form>
