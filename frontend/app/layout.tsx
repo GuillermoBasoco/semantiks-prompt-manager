@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import './globals.css'
 import { aeonik } from './fonts/fonts'
+import Sidebar from '@/components/sidebar'
 
 export const metadata = {
   title: 'Semantiks Prompt Manager',
@@ -20,7 +21,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <a className="underline" href="/new">New</a>
             </nav>
           </header>
-          {children}
+          <div className="grid gap-6 md:grid-cols-[280px_1fr]">
+            <Sidebar />
+            <div>
+              {children}
+            </div>
+          </div>
         </div>
       </body>
     </html>

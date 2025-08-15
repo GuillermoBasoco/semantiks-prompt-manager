@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Semantiks Web Component Demo</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 24px; color: #111827; }
+      .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      input[type="text"] { width: 520px; max-width: 100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 8px; }
+      button { padding: 8px 12px; border-radius: 8px; border: 1px solid #111827; background: #111827; color: #fff; cursor: pointer; }
+      button.secondary { background: #fff; color: #111827; border-color: #d1d5db; }
+      .section { margin-top: 16px; }
+      .hint { color: #6b7280; font-size: 12px; margin-top: 8px; }
+    </style>
+    <script src="/semantiks-ask.js" async></script>
+  </head>
+  <body>
+    <h1>Semantiks <semantiks-ask> Web Component Demo</h1>
+    <p class="hint">This page demonstrates the custom element without an iframe. It uses your app's <code>/api/ask</code> and the currently active prompt by default.</p>
+
+    <div class="section">
+      <h2>Floating widget</h2>
+      <p class="hint">Appears at bottom-right. No extra markup needed beyond the tag itself.</p>
+      <semantiks-ask endpoint="/api/ask"></semantiks-ask>
+    </div>
+
+    <div class="section">
+      <h2>Inline widget</h2>
+      <p class="hint">Renders in-place (non-floating). You can place it anywhere in your layout.</p>
+      <div style="border: 1px dashed #e5e7eb; padding: 12px; border-radius: 8px;">
+        <semantiks-ask endpoint="/api/ask" inline></semantiks-ask>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Target a specific prompt (optional)</h2>
+      <div class="hint">Replace 123 with a real prompt id to override the active prompt.</div>
+      <div style="border: 1px dashed #e5e7eb; padding: 12px; border-radius: 8px;">
+        <semantiks-ask endpoint="/api/ask" inline prompt-id="123"></semantiks-ask>
+      </div>
+    </div>
+
+  </body>
+  </html>
+
+
