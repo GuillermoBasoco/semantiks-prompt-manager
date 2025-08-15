@@ -37,25 +37,25 @@ export function Filters() {
   return (
     <form onSubmit={applyFilters} className="grid grid-cols-1 gap-3 md:grid-cols-5">
       <div className="md:col-span-2">
-        <label className="label">Keyword</label>
-        <input className="input" value={q} onChange={function (e) { setQ(e.target.value) }} placeholder="Search title/content" />
+        <label className="label">Palabra clave</label>
+        <input className="input" value={q} onChange={function (e) { setQ(e.target.value) }} placeholder="Buscar en título/contexto" />
       </div>
       <div className="md:col-span-2">
-        <label className="label">Tag</label>
-        <input className="input" value={tag} onChange={function (e) { setTag(e.target.value) }} placeholder="e.g. summary" />
+        <label className="label">Etiqueta</label>
+        <input className="input" value={tag} onChange={function (e) { setTag(e.target.value) }} placeholder="ej. poesía" />
       </div>
       <div>
-        <label className="label">Status</label>
+        <label className="label">Estado</label>
         <select className="input" value={status} onChange={function (e) { setStatus(e.target.value) }}>
-          <option value="">All</option>
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
+          <option value="">Todos</option>
+          <option value="active">Activo</option>
+          <option value="inactive">Inactivo</option>
         </select>
       </div>
       <div className="md:col-span-5 flex gap-2">
-        <button type="submit" className="btn-primary px-4 py-2">Apply</button>
-        <button type="button" className="btn-outline px-4 py-2" onClick={resetFilters}>Reset</button>
-        <a href="/new" className="btn-outline px-4 py-2 ml-auto">New Prompt</a>
+        <button type="submit" className="btn-primary px-4 py-2">Aplicar</button>
+        <button type="button" className="btn-outline px-4 py-2" onClick={resetFilters}>Limpiar</button>
+        <a href="/new" className="btn-outline px-4 py-2 ml-auto">Nuevo</a>
       </div>
     </form>
   )
