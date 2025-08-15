@@ -4,6 +4,7 @@ from typing import List, Optional
 
 from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+import os
 from sqlmodel import Session
 
 from crud import create_prompt, get_prompt_by_id, list_prompts, update_prompt
@@ -13,9 +14,10 @@ from schemas import PromptCreate, PromptRead, PromptUpdate
 
 app = FastAPI(title="Semantiks Prompt Manager", version="0.1.0")
 
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
 app.add_middleware(
 	CORSMiddleware,
-	allow_origins=["http://localhost:3000"],
+	allow_origins=[origin.strip() for origin in allowed_origins if origin.strip()],
 	allow_credentials=True,
 	allow_methods=["*"],
 	allow_headers=["*"],

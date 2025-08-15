@@ -1,0 +1,27 @@
+app = "semantiks-prompts-backend"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[env]
+  # Set ALLOWED_ORIGINS to your frontend public URL
+  ALLOWED_ORIGINS = "*"
+
+[[vm]]
+  size = "shared-cpu-1x"
+
+# Postgres
+[[mounts]]
+  source = "data"
+  destination = "/data"
+
+
