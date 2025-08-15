@@ -1,6 +1,8 @@
 import PromptDetail from '@/components/prompt-detail'
 import { notFound } from 'next/navigation'
 
+export const runtime = 'edge'
+
 type Props = { params: { id: string } }
 
 export default async function PromptDetailPage({ params }: Props) {
