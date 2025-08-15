@@ -19,4 +19,9 @@ primary_region = "iad"
 [[vm]]
   size = "shared-cpu-1x"
 
+# Match existing machine volume
+[[mounts]]
+  source = "data"
+  destination = "/data"
+
 

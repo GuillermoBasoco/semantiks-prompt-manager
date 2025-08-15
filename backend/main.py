@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, HTTPException, Query, Response
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from sqlmodel import Session
@@ -83,12 +83,12 @@ def update_prompt_endpoint(
 	return updated
 
 
-@app.delete("/prompts/{prompt_id}", status_code=204)
-def delete_prompt_endpoint(prompt_id: int, session: Session = Depends(get_session)) -> None:
+@app.delete("/prompts/{prompt_id}", status_code=204, response_class=Response)
+def delete_prompt_endpoint(prompt_id: int, session: Session = Depends(get_session)) -> Response:
 	prompt = get_prompt_by_id(session, prompt_id)
 	if not prompt:
 		raise HTTPException(status_code=404, detail="Prompt not found")
 	delete_prompt(session, prompt=prompt)
-	return None
+	return Response(status_code=204)
 
 
